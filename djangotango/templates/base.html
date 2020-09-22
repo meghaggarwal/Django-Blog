@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+
+<body>
+  <header class="wrapper">
+    <h1><a href="{% url 'home' %}"><img class="logo" src="{% static 'logo.png' %}"></a></h1>
+    <nav>
+      <ul>
+        {% if user.is_authenticated %}
+        <li class='auth-user'>
+          <div class="dropdown">
+            <button class="dropbtn">Hello, {{ request.user }}
+              <i class="fa fa-caret-down"></i>
+              <i class="arrow down"></i>
+            </button>
+            <div class="dropdown-content">
+              <form class="logout-link" action="{% url 'accounts:logout' %}" method="POST">
+                {% csrf_token %}
+                <input type="submit" value="Logout" class="logout-btn">
+              </form>
+            </div>
+          </div> 
+          <!-- <form class="logout-link" action="{% url 'accounts:logout' %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="Logout">
+          </form> -->
+        </li>
+        <li>
+          <a href="{% url 'articles:create' %}" class="highlight">Post an Article</a>
+        </li>
+        {% else %}
+        <li><a href="{% url 'accounts:login' %}">Login</a></li>
+        <li><a href="{% url 'accounts:signup' %}">Sign Up</a></li>
+
+        {% endif %}
+      </ul>
+    </nav>
+  </header>
+  <div class="wrapper">
+    {% block content %}
+    {% endblock %}
+  </div>
+</body>
+
+</html>
